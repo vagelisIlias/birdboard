@@ -2,33 +2,60 @@
 
 namespace Tests\Feature;
 
-use Illuminate\Foundation\Testing\RefreshDatabase;
-use Illuminate\Foundation\Testing\WithFaker;
 use Tests\TestCase;
+use App\Models\Project;
+use Illuminate\Foundation\Testing\WithFaker;
+use Illuminate\Foundation\Testing\RefreshDatabase;
 
 class ProjectTest extends TestCase
 {   
     use WithFaker, RefreshDatabase;
     /**
      * @test
+     * You can take off the test if you wish and start with a_user_project etc
      */
-    public function a_user_can_create_a_project()
+
+    public function test_a_user_can_create_a_project()
     {   
         $this->withoutExceptionHandling();
 
         $attributes = [
-            'title' => $this->faker->sentence(),
-            'description' => $this->faker->paragraph(),
+            'title' => 'Test Project Title',
+            'description' => 'Test Project Description',
         ];
 
-        // Create a project
         $this->post('/projects', $attributes)->assertRedirect('/projects');
-
-        // // Check if the project details are in the database
         $this->assertDatabaseHas('projects', $attributes);
-
-        // Perform a GET request after creating the project
         $this->get('/projects')->assertSee($attributes['title'])
                             ->assertSee($attributes['description']);
+    }
+
+    public function test_a_project_requires_a_title()
+    {   
+        $this->withoutExceptionHandling();
+
+        $attributes = Project::factory()->raw(['title' => 'Test Title']);
+
+        $this->post('/projects', $attributes)->assertSessionHasErrors('title');
+    }
+
+    public function test_a_project_requires_a_description()
+    {   
+        $this->withoutExceptionHandling();
+
+        $attributes = Project::factory()->raw(['description' => 'Test Description']);
+
+        $this->post('/projects', $attributes)->assertSessionHasErrors('description');
+    }
+
+    public function test_a_user_can_show_a_project_with_title_and_description()
+    {
+        $this->withoutExceptionHandling(); 
+
+        $project = Project::factory()->create();
+
+        $this->get('/projects/' . $project->id)
+            ->assertSee($project->title)
+            ->assertSee($project->description);
     }
 }

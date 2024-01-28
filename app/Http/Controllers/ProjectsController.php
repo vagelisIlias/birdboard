@@ -14,9 +14,22 @@ class ProjectsController extends Controller
     }
 
     public function store()
-    {
-        Project::create(request(['title', 'description']));
+    {   
+        $attributes = request()->validate([
+            'title' => 'required',
+            'description' => 'required',
+        ]);
+        
+        Project::create($attributes);
 
-        return redirect('/projects');
+        return redirect('/projects')->withErrors([
+            'title' => 'The title is required', 
+            'description' => 'The description is required',
+        ]);
+    }
+
+    public function show(Project $project)
+    {
+        return view('projects.show', compact('project'));
     }
 }
