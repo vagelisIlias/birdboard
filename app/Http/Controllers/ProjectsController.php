@@ -18,13 +18,15 @@ class ProjectsController extends Controller
         $attributes = request()->validate([
             'title' => 'required',
             'description' => 'required',
+            'owner_id' => 'required',
         ]);
         
         Project::create($attributes);
 
         return redirect('/projects')->withErrors([
-            'title' => 'The title is required', 
-            'description' => 'The description is required',
+            'title' => 'A title required for the title of project',
+            'description' => 'A description required for the description of project',
+            'owner_id' => 'An owner id required for the owner',
         ]);
     }
 

@@ -3,6 +3,7 @@
 namespace Tests\Feature;
 
 use Tests\TestCase;
+use App\Models\User;
 use App\Models\Project;
 use Illuminate\Foundation\Testing\WithFaker;
 use Illuminate\Foundation\Testing\RefreshDatabase;
@@ -19,15 +20,17 @@ class ProjectTest extends TestCase
     {   
         $this->withoutExceptionHandling();
 
+        $user = User::factory()->create();
+
         $attributes = [
             'title' => 'Test Project Title',
             'description' => 'Test Project Description',
+            'owner_id' => $user->id,
         ];
 
         $this->post('/projects', $attributes)->assertRedirect('/projects');
         $this->assertDatabaseHas('projects', $attributes);
-        $this->get('/projects')->assertSee($attributes['title'])
-                            ->assertSee($attributes['description']);
+        $this->get('/projects')->assertSee($attributes['title']);
     }
 
     public function test_a_project_requires_a_title()
@@ -42,7 +45,7 @@ class ProjectTest extends TestCase
     public function test_a_project_requires_a_description()
     {   
         $this->withoutExceptionHandling();
-
+        
         $attributes = Project::factory()->raw(['description' => 'Test Description']);
 
         $this->post('/projects', $attributes)->assertSessionHasErrors('description');
@@ -54,8 +57,18 @@ class ProjectTest extends TestCase
 
         $project = Project::factory()->create();
 
-        $this->get('/projects/' . $project->id)
+        $this->get($project->path())
             ->assertSee($project->title)
             ->assertSee($project->description);
     }
+
+    public function test_a_project_requires_an_owner()
+    {
+        $this->withoutExceptionHandling();
+        
+        $user = User::factory()->create();
+        $attributes = Project::factory()->raw(['owner_id' => $user->id]);
+        $this->post('/projects', $attributes)->assertSessionHasErrors('owner_id');
+    }
+
 }
