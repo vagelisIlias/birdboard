@@ -12,7 +12,7 @@ class UserTest extends TestCase
 {   
     use RefreshDatabase;
     /**
-     * A basic feature test example.
+     * A user test
      */
     public function test_a_user_has_projects()
     {

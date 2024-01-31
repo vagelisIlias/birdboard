@@ -16,7 +16,7 @@ class Project extends Model
         return $this->belongsTo(User::class, 'owner_id');
     }
 
-    public function path()
+    public function path(): string
     {
         return "/projects/{$this->id}";
     }
