@@ -16,7 +16,7 @@ class ProjectTest extends TestCase
      * You can take off the test if you wish and start with a_user_project etc
      */
 
-    public function test_authedicated_users_can_create_projects()
+    public function test_guest_cannot_create_projects()
     {   
         $this->withoutExceptionHandling();
         $user = User::factory()->create();
@@ -30,6 +30,22 @@ class ProjectTest extends TestCase
         $this->post('/projects', $attributes)
             ->assertSessionHasErrors(['title', 'description'])
             ->assertRedirect('/projects');        
+    }
+
+    // public function test_guest_can_not_view_projects() 
+    // {
+    // //     $this->withoutExceptionHandling();
+    // //     $user = User::factory()->create();
+    // //     $this->actingAs($user);
+        
+    //     $this->get('/projects')->assertRedirect('login');
+    // }
+
+    public function test_guest_cannot_view_a_single_project()
+    {
+        $project = Project::factory()->create();
+        $this->get($project->path())
+            ->assertRedirect('login');
     }
 
     public function test_a_user_can_create_a_project()
@@ -73,7 +89,9 @@ class ProjectTest extends TestCase
     {   
         $this->withoutExceptionHandling();
         $project = Project::factory()->create();
-
+        $user = User::factory()->create();
+        $this->actingAs($user);
+       
         $this->get($project->path())
             ->assertSee($project->title)
             ->assertSee($project->description);
