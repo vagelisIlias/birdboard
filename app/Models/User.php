@@ -48,4 +48,10 @@ class User extends Authenticatable
     {
         return $this->hasMany(Project::class, 'owner_id');
     }
+
+    public function isNot($user)
+    {
+        return $this->id !== $user->id;
+    }
+
 }
