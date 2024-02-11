@@ -1,0 +1,22 @@
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+.button {
+  @apply px-4 py-2 bg-blue-500 dark:bg-blue-500 hover:bg-blue-700 dark:hover:bg-blue-600 hover:text-gray-100 dark:hover:text-gray-100 rounded shadow-md transition;
+}
+
+.card {
+  @apply py-5 rounded dark:bg-gray-200 shadow-xl text-gray-900 dark:text-gray-500 overflow-hidden;
+}
+.card-head {
+  @apply text-lg text-gray-700
+}
+a {
+  @apply focus:outline-none transition duration-150 ease-in-out;
+
+  &.link-gray {
+    @apply text-gray-500 dark:text-gray-400 hover:text-gray-700 dark:hover:text-gray-300 hover:border-gray-300 dark:hover:border-gray-700 focus:outline-none focus:text-gray-700 dark:focus:text-gray-300 focus:border-gray-300 dark:focus:border-gray-700;
+  }
+}
