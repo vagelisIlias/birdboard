@@ -12,19 +12,24 @@
                         <div class="lg:flex -mx-3 ">
                             <div class="lg:w-2/3 px-3">
                                 <div class="mb-8">
+                                    <h2 class="text-lg text-gray-400 mb-3">Title</h2>
+                                    {{-- title --}}
+                                    <div class="card p-4 mb-3 last:mb-0">
+                                       {{ $project->title }}
+                                    </div>
+                                </div>
+                                <div class="mb-8">
+                                    <h2 class="text-lg text-gray-400 mb-3">Description</h2>
+                                    {{-- description --}}
+                                    <div class="card p-4 mb-3 last:mb-0">
+                                       {{ $project->description }}
+                                    </div>
+                                </div>
+                                <div class="mb-8">
                                     <h2 class="text-lg text-gray-400 mb-3">Tasks</h2>
                                     {{-- tasks --}}
                                     <div class="card p-4 mb-3 last:mb-0">
-                                        Lorem ipsum...
-                                    </div>
-                                    <div class="card p-4 mb-3 last:mb-0">
-                                        Lorem ipsum...
-                                    </div>
-                                    <div class="card p-4 mb-3 last:mb-0">
-                                        Lorem ipsum...
-                                    </div>
-                                    <div class="card p-4 mb-3 last:mb-0">
-                                        Lorem ipsum...
+                                       {{ $project->description }}
                                     </div>
                                 </div>
                                 <div class="mb-8">
@@ -35,9 +40,6 @@
                                         <textarea id="notes" name="notes" rows="5" class="card p-4 w-full" placeholder="Lorem impsum dolor sit amet..."></textarea>
                                     </form>
                                 </div>
-                            </div>
-                            <div class="lg:w-1/3 px-3">
-                               @include('projects.card')
                             </div>
                         </div>
                     </main>

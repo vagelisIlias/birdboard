@@ -20,10 +20,10 @@ Route::get('/', function () {
 });
 
 Route::group(['middleware' => 'auth'], function () {
-    Route::get('/projects', [ProjectsController::class, 'index'])->name('projects');
-    Route::get('/projects/create', [ProjectsController::class, 'create'])->name('projects.create');
-    Route::get('/projects/{project}', [ProjectsController::class, 'show']);
-    Route::post('/projects', [ProjectsController::class, 'store']);
+    Route::get('/projects', [ProjectsController::class, 'index'])->name('project.index');
+    Route::get('/projects/create', [ProjectsController::class, 'create'])->name('project.create');
+    Route::get('/projects/{project}', [ProjectsController::class, 'show'])->name('project.show');
+    Route::post('/projects', [ProjectsController::class, 'store'])->name('project.store');
 });
 
 Route::get('/dashboard', function () {
