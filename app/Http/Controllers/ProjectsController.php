@@ -25,10 +25,7 @@ class ProjectsController extends Controller
 
         auth()->user()->projects()->create($attributes);
         
-        return redirect('/projects')->withErrors([
-            'title' => 'A title required for the title of project',
-            'description' => 'A description required for the description of project',
-        ]);
+        return redirect('/projects');
     }
 
     public function show(Project $project)

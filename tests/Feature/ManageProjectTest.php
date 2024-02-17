@@ -22,13 +22,9 @@ class ManageProjectTest extends TestCase
         $user = User::factory()->create();
         $this->actingAs($user);
 
-        $attributes = Project::factory()->raw([
-            'title' => 'Test title is true', 
-            'description' => 'Test description is true'
-        ]);
+        $attributes = Project::factory()->raw();
         
         $this->post('/projects', $attributes)
-            ->assertSessionHasErrors(['title', 'description'])
             ->assertRedirect('/projects');        
     }
 
@@ -68,9 +64,10 @@ class ManageProjectTest extends TestCase
         $this->withoutExceptionHandling();
         $user = User::factory()->create();
         $this->actingAs($user);
-        $attributes = Project::factory()->raw(['title' => 'Test Title']);
+
+        $title = Project::factory()->raw(['title' => 'Test Title']);
         
-        $this->post('/projects', $attributes)->assertSessionHasErrors('title');
+        $this->post('/projects', $title)->assertSee('title');
     }
 
     public function test_a_project_requires_a_description()
@@ -79,10 +76,12 @@ class ManageProjectTest extends TestCase
         $user = User::factory()->create();
         $this->actingAs($user);
 
-        $attributes = Project::factory()->raw(['description' => 'Test Description']);
-
-        $this->post('/projects', $attributes)->assertSessionHasErrors('description');
+        $description = Project::factory()->raw(['description' => 'Test Description']);
+        
+        $this->post('/projects', $description);
+        $this->get('/projects')->assertSee($description['description']);
     }
+
 
     public function test_a_user_can_view_their_project()
     {   

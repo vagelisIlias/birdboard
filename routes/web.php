@@ -3,6 +3,7 @@
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\ProjectsController;
+use App\Http\Controllers\ProjectTasksController;
 
 /*
 |--------------------------------------------------------------------------
@@ -24,6 +25,8 @@ Route::group(['middleware' => 'auth'], function () {
     Route::get('/projects/create', [ProjectsController::class, 'create'])->name('project.create');
     Route::get('/projects/{project}', [ProjectsController::class, 'show'])->name('project.show');
     Route::post('/projects', [ProjectsController::class, 'store'])->name('project.store');
+
+    Route::post('/projects/{project}/tasks', [ProjectTasksController::class, 'store'])->name('task.store');
 });
 
 Route::get('/dashboard', function () {
