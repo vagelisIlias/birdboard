@@ -32,6 +32,18 @@ class ProjectTasksTest extends TestCase
             ->assertSee($task->body);
     }
 
+    public function test_only_the_owner_can_have_tasks_on_their_projects()
+    {    
+        $user = User::factory()->create();
+        $this->actingAs($user);
+
+        $project = Project::factory()->create();
+
+        $this->post($project->path() . '/tasks', ['body' => 'Test Task'])
+            ->assertStatus(403);
+        $this->assertDatabaseMissing('tasks', ['body' => 'Test Task']);
+    }
+
     public function test_a_user_can_add_tasks()
     {
         $this->withoutExceptionHandling();
@@ -48,11 +60,10 @@ class ProjectTasksTest extends TestCase
 
     public function test_a_task_requires_a_body()
     {
-        $this->withoutExceptionHandling();
         $user = User::factory()->create();
         $this->actingAs($user);
 
-        $project = Project::factory()->create(['owner_id' => $user->id]);
+        $project = Project::factory()->create();
 
         $task = Task::factory()->raw(['body' => 'Test Body']);
 
