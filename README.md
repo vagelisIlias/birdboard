@@ -7,25 +7,29 @@ The Birdboard Project is a Laravel-based application designed for developing bui
 
 Clone the repository:
 
-    ```bash
     git clone https://github.com/your-username/birdboard.git
     cd birdboard
-    ```
+    
 Install Composer dependencies:
 
-    ```bash
     composer install
-    ```
+    
 
 Install NPM dependencies:
 
-    ```bash
     npm install
-    ```
+
+Update the `.env` file with your database configuration
+    
+    env.example .env
  
 Run Migrations and Seed Database
 
     php artisan migrate --seed
+
+Run the dev server
+
+    npm run dev
 
 ## Screenshots
 
