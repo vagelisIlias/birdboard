@@ -5,9 +5,23 @@
 
 The Birdboard Project is a Laravel-based application designed for developing built-in with TDD (Test Driven Development). The technology stack includes Laravel for backend functionality, HTML, CSS Tawilind, for frontend interactivity, and MySQL for database management.
 
-Installation
+Clone the repository:
 
+    ```bash
     git clone https://github.com/your-username/birdboard.git
+    cd birdboard
+    ```
+Install Composer dependencies:
+
+    ```bash
+    composer install
+    ```
+
+Install NPM dependencies:
+
+    ```bash
+    npm install
+    ```
  
 Run Migrations and Seed Database
 
