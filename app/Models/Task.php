@@ -14,9 +14,11 @@ class Task extends Model
         'id'
     ];
 
+    protected $touches = ['project'];
+
     public function project()
     {
-        $this->belongsTo(Project::class);
+        return $this->belongsTo(Project::class);
     }
 
     public function path()
