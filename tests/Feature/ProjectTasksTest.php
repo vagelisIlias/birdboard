@@ -32,6 +32,28 @@ class ProjectTasksTest extends TestCase
             ->assertSee($task->body);
     }
 
+    public function test_a_task_can_be_updated()
+    {   
+        $this->withoutExceptionHandling();
+        $user = User::factory()->create();
+        $this->actingAs($user);
+
+        $project = auth()->user()->projects()->create(
+            Project::factory()->raw()
+        );
+        $task = $project->addTask('Test Task');
+    
+        $this->patch($project->path() . '/tasks/' . $task->id, [
+            'body' => 'Task Updated',
+            'completed' => true,
+        ]);
+        
+        $this->assertDatabaseHas('tasks', [
+            'body' => 'Task Updated',
+            'completed' => true,
+        ]);        
+    }
+
     public function test_only_the_owner_can_have_tasks_on_their_projects()
     {    
         $user = User::factory()->create();
@@ -56,6 +78,20 @@ class ProjectTasksTest extends TestCase
         $project->addTask("Test Task");
 
         $this->assertCount(1, $project->tasks);
+    }
+
+    public function test_a_user_can_update_tasks()
+    {
+        $user = User::factory()->create();
+        $this->actingAs($user);
+        
+        $project = Project::factory()->create();
+        $task = Task::factory()->create();
+
+        $project->addTask("Test Task");
+
+        $this->patch($project->path() . '/tasks/' . $task->id, ['body' => 'Test Task updated successfully'])
+            ->assertStatus(403);
     }
 
     public function test_a_task_requires_a_body()

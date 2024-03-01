@@ -18,16 +18,12 @@ class ManageProjectTest extends TestCase
 
     public function test_guest_cannot_create_projects()
     {   
-        $this->withoutExceptionHandling();
-        $user = User::factory()->create();
-        $this->actingAs($user);
-
         $attributes = Project::factory()->raw();
-        
+    
         $this->post('/projects', $attributes)
-            ->assertRedirect('/projects');        
+            ->assertRedirect('login');
     }
-
+    
     public function test_guest_can_not_view_projects() 
     {
         $this->get('/projects')
@@ -48,16 +44,23 @@ class ManageProjectTest extends TestCase
         $this->actingAs($user);
 
         $this->get('/projects/create')->assertStatus(200);
+
         $attributes = [
             'title' => 'Test Project Title',
             'description' => 'Test Project Description',
             'owner_id' => $user->id,
         ];
-        
-        $this->post('/projects', $attributes)->assertRedirect('/projects');
+
+        $this->post('/projects', $attributes);
+
+        $project = Project::where($attributes)->first();
+
         $this->assertDatabaseHas('projects', $attributes);
-        $this->get('/projects')->assertSee($attributes['title']);
+        
+        $this->get(route('project.show', ['project' => $project->id]))
+            ->assertSee($attributes['title']);
     }
+
 
     public function test_a_project_requires_a_title()
     {   
